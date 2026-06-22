@@ -6,24 +6,19 @@ pool:
 
 steps:
 
-# Build using Maven
-- task: Maven@3
+- task: Maven@4
   inputs:
     mavenPomFile: 'pom.xml'
     goals: 'package'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
 
-# Copy generated WAR/JAR files
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(System.DefaultWorkingDirectory)'
-    Contents: '**/target/*.war'
+    Contents: '**/*.jar'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-# Publish artifact
 - task: PublishBuildArtifacts@1
   inputs:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
